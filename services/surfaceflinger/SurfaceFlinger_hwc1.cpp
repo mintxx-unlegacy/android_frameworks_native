@@ -30,7 +30,13 @@
 
 #include <EGL/egl.h>
 
+
 #include <cutils/iosched_policy.h>
+
+#ifdef USE_MHEAP_SCREENSHOT
+#include <GLES/gl.h>
+#endif
+
 #include <cutils/log.h>
 #include <cutils/properties.h>
 

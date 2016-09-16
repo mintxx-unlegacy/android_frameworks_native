@@ -155,7 +155,7 @@ public:
     /* Capture the specified screen. requires READ_FRAME_BUFFER permission
      * This function will fail if there is a secure window on screen.
      */
-    virtual status_t captureScreen(const sp<IBinder>& display, sp<IMemoryHeap>* heap,
+    virtual status_t captureScreenLegacy(const sp<IBinder>& display, sp<IMemoryHeap>* heap,
             uint32_t* width, uint32_t* height,
             Rect sourceCrop, uint32_t reqWidth, uint32_t reqHeight,
             uint32_t minLayerZ, uint32_t maxLayerZ,

@@ -100,7 +100,7 @@ public:
     }
     
 #ifdef USE_MHEAP_SCREENSHOT
-    virtual status_t captureScreen(
+    virtual status_t captureScreenLegacy(
             const sp<IBinder>& display, sp<IMemoryHeap>* heap,
             uint32_t* width, uint32_t* height,
             Rect sourceCrop, uint32_t reqWidth, uint32_t reqHeight,
@@ -414,7 +414,7 @@ status_t BnSurfaceComposer::onTransact(
             uint32_t rotation = data.readUint32();
             sp<IMemoryHeap> heap;
             uint32_t w, h;
-            status_t res = captureScreen(display, &heap, &w, &h,
+            status_t res = captureScreenLegacy(display, &heap, &w, &h,
                     sourceCrop, reqWidth, reqHeight, minLayerZ, maxLayerZ,
                     useIdentityTransform,
                     static_cast<ISurfaceComposer::Rotation>(rotation));

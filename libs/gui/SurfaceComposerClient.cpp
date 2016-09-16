@@ -927,7 +927,7 @@ status_t ScreenshotClient::update(const sp<IBinder>& display,
 #ifdef USE_MHEAP_SCREENSHOT
     int ret = -1;
     mHeap = 0;
-    ret = s->captureScreen(display, &mHeap, &mBuffer.width, &mBuffer.height, sourceCrop,
+    ret = s->captureScreenLegacy(display, &mHeap, &mBuffer.width, &mBuffer.height, sourceCrop,
             reqWidth, reqHeight, minLayerZ, maxLayerZ, useIdentityTransform,
             static_cast<ISurfaceComposer::Rotation>(rotation));
     if (ret == NO_ERROR) {

@@ -26,9 +26,6 @@
 #include <stdatomic.h>
 
 #include <EGL/egl.h>
-#ifdef USE_MHEAP_SCREENSHOT
-#include <GLES/gl.h>
-#endif
 
 #include <cutils/iosched_policy.h>
 #include <cutils/log.h>

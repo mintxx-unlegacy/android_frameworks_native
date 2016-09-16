@@ -3953,10 +3953,12 @@ SurfaceFlinger::DisplayDeviceState::DisplayDeviceState(
 }; // namespace android
 
 
+#ifndef USE_MHEAP_SCREENSHOT
 #if defined(__gl_h_)
 #error "don't include gl/gl.h in this file"
 #endif
 
 #if defined(__gl2_h_)
 #error "don't include gl2/gl2.h in this file"
+#endif
 #endif

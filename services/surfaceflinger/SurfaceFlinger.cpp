@@ -3739,7 +3739,7 @@ status_t SurfaceFlinger::captureScreenImplCpuConsumerLocked(
     return result;
 }
 
-status_t SurfaceFlinger::captureScreen(const sp<IBinder>& display,
+status_t SurfaceFlinger::captureScreenLegacy(const sp<IBinder>& display,
         sp<IMemoryHeap>* heap, uint32_t* outWidth, uint32_t* outHeight,
         Rect sourceCrop, uint32_t reqWidth, uint32_t reqHeight,
         uint32_t minLayerZ, uint32_t maxLayerZ,

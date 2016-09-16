@@ -4067,7 +4067,6 @@ status_t SurfaceFlinger::captureScreenLegacy(const sp<IBinder>& display,
     return res;
 }
 #endif
-
 // ---------------------------------------------------------------------------
 
 SurfaceFlinger::LayerVector::LayerVector() {

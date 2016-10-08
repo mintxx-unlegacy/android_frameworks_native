@@ -118,6 +118,10 @@ else
     LOCAL_CFLAGS += -DMAX_VIRTUAL_DISPLAY_DIMENSION=0
 endif
 
+ifeq ($(BOARD_EGL_NEEDS_FNW),true)
+    LOCAL_CFLAGS += -DEGL_NEEDS_FNW
+endif
+
 LOCAL_CFLAGS += -fvisibility=hidden -Werror=format
 LOCAL_CFLAGS += -std=c++14
 

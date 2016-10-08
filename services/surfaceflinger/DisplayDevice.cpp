@@ -47,6 +47,10 @@
 #include "SurfaceFlinger.h"
 #include "Layer.h"
 
+#ifdef EGL_NEEDS_FNW
+#include <ui/FramebufferNativeWindow.h>
+#endif
+
 // ----------------------------------------------------------------------------
 using namespace android;
 // ----------------------------------------------------------------------------
@@ -105,7 +109,11 @@ DisplayDevice::DisplayDevice(
 {
     Surface* surface;
     mNativeWindow = surface = new Surface(producer, false);
+#ifndef EGL_NEEDS_FNW
     ANativeWindow* const window = mNativeWindow.get();
+#else
+    ANativeWindow* const window = new FramebufferNativeWindow();
+#endif
     char property[PROPERTY_VALUE_MAX];
 
     /*

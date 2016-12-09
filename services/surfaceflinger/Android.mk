@@ -86,22 +86,45 @@ ifeq ($(TARGET_RUNNING_WITHOUT_SYNC_FRAMEWORK),true)
     LOCAL_CFLAGS += -DRUNNING_WITHOUT_SYNC_FRAMEWORK
 endif
 
+
 ifeq ($(BOARD_USE_MHEAP_SCREENSHOT),true)
     LOCAL_CFLAGS += -DUSE_MHEAP_SCREENSHOT
 endif
 
-# See build/target/board/generic/BoardConfig.mk for a description of this setting.
+ifeq ($(TARGET_HAS_HH_VSYNC_ISSUE),true)
+    LOCAL_CFLAGS += -DHH_VSYNC_ISSUE
+endif
+
+# The following two BoardConfig variables define (respectively):
+#
+#   - The phase offset between hardware vsync and when apps are woken up by the
+#     Choreographer callback
+#   - The phase offset between hardware vsync and when SurfaceFlinger wakes up
+#     to consume input
+#
+# Their values can be tuned to trade off between display pipeline latency (both
+# overall latency and the lengths of the app --> SF and SF --> display phases)
+# and frame delivery jitter (which typically manifests as "jank" or "jerkiness"
+# while interacting with the device). The default values should produce a
+# relatively low amount of jitter at the expense of roughly two frames of
+# app --> display latency, and unless significant testing is performed to avoid
+# increased display jitter (both manual investigation using systrace [1] and
+# automated testing using dumpsys gfxinfo [2] are recommended), they should not
+# be modified.
+#
+# [1] https://developer.android.com/studio/profile/systrace.html
+# [2] https://developer.android.com/training/testing/performance.html
+
 ifneq ($(VSYNC_EVENT_PHASE_OFFSET_NS),)
     LOCAL_CFLAGS += -DVSYNC_EVENT_PHASE_OFFSET_NS=$(VSYNC_EVENT_PHASE_OFFSET_NS)
 else
-    LOCAL_CFLAGS += -DVSYNC_EVENT_PHASE_OFFSET_NS=0
+    LOCAL_CFLAGS += -DVSYNC_EVENT_PHASE_OFFSET_NS=1000000
 endif
 
-# See build/target/board/generic/BoardConfig.mk for a description of this setting.
 ifneq ($(SF_VSYNC_EVENT_PHASE_OFFSET_NS),)
     LOCAL_CFLAGS += -DSF_VSYNC_EVENT_PHASE_OFFSET_NS=$(SF_VSYNC_EVENT_PHASE_OFFSET_NS)
 else
-    LOCAL_CFLAGS += -DSF_VSYNC_EVENT_PHASE_OFFSET_NS=0
+    LOCAL_CFLAGS += -DSF_VSYNC_EVENT_PHASE_OFFSET_NS=1000000
 endif
 
 ifneq ($(PRESENT_TIME_OFFSET_FROM_VSYNC_NS),)
@@ -118,6 +141,10 @@ endif
 
 ifeq ($(BOARD_EGL_NEEDS_FNW),true)
     LOCAL_CFLAGS += -DEGL_NEEDS_FNW
+endif
+
+ifeq ($(BOARD_USE_BGRA_8888),true)
+    LOCAL_CFLAGS += -DUSE_BGRA_8888
 endif
 
 LOCAL_CFLAGS += -fvisibility=hidden -Werror=format
@@ -157,6 +184,24 @@ ifeq ($(TARGET_USES_QCOM_BSP), true)
     ExSurfaceFlinger/ExVirtualDisplaySurface.cpp \
     ExSurfaceFlinger/ExHWComposer.cpp
   endif
+endif
+
+ifeq ($(BOARD_USES_HWC_SERVICES), true)
+    LOCAL_CFLAGS += -DUSES_HWC_SERVICES
+    LOCAL_SHARED_LIBRARIES += libExynosHWCService
+    LOCAL_C_INCLUDES += \
+        $(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ/usr/include \
+        $(TOP)/hardware/samsung_slsi-$(TARGET_SLSI_VARIANT)/$(TARGET_BOARD_PLATFORM)/libhwcService \
+        $(TOP)/hardware/samsung_slsi-$(TARGET_SLSI_VARIANT)/$(TARGET_BOARD_PLATFORM)/include \
+        $(TOP)/hardware/samsung_slsi-$(TARGET_SLSI_VARIANT)/$(TARGET_SOC)/include \
+        $(TOP)/hardware/samsung_slsi-$(TARGET_SLSI_VARIANT)/$(TARGET_SOC)/libhwcmodule \
+        $(TOP)/hardware/samsung_slsi-$(TARGET_SLSI_VARIANT)/exynos/libhwc \
+        $(TOP)/hardware/samsung_slsi-$(TARGET_SLSI_VARIANT)/exynos/include \
+        $(TOP)/hardware/samsung_slsi-$(TARGET_SLSI_VARIANT)/exynos/libexynosutils \
+        $(TOP)/system/core/libsync/include
+
+LOCAL_ADDITIONAL_DEPENDENCIES := \
+        $(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ/usr
 endif
 
 LOCAL_MODULE := libsurfaceflinger

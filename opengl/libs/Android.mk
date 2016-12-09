@@ -31,7 +31,7 @@ LOCAL_SRC_FILES:= 	       \
 	EGL/Loader.cpp 	       \
 #
 
-LOCAL_SHARED_LIBRARIES += libcutils libutils liblog libui
+LOCAL_SHARED_LIBRARIES += libbinder libcutils libutils liblog libui
 LOCAL_MODULE:= libEGL
 LOCAL_LDFLAGS += -Wl,--exclude-libs=ALL
 LOCAL_SHARED_LIBRARIES += libdl
@@ -61,6 +61,10 @@ endif
 
 ifneq ($(MAX_EGL_CACHE_SIZE),)
   LOCAL_CFLAGS += -DMAX_EGL_CACHE_SIZE=$(MAX_EGL_CACHE_SIZE)
+endif
+
+ifeq ($(BOARD_USE_BGRA_8888), true)
+  LOCAL_CFLAGS += -DUSE_BGRA_8888
 endif
 
 ifneq ($(filter address,$(SANITIZE_TARGET)),)

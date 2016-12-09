@@ -82,6 +82,10 @@
 #include "RenderEngine/RenderEngine.h"
 #include <cutils/compiler.h>
 
+#ifdef USES_HWC_SERVICES
+#include "ExynosHWCService.h"
+#endif
+
 #define DISPLAY_COUNT       1
 
 /*
@@ -127,6 +131,10 @@ const String16 sReadFramebuffer("android.permission.READ_FRAME_BUFFER");
 const String16 sDump("android.permission.DUMP");
 
 // ---------------------------------------------------------------------------
+
+#ifdef USES_HWC_SERVICES
+static bool notifyPSRExit = true;
+#endif
 
 SurfaceFlinger::SurfaceFlinger()
     :   BnSurfaceComposer(),
@@ -316,6 +324,14 @@ void SurfaceFlinger::bootFinished()
     // can choose where to stop the animation.
     property_set("service.bootanim.exit", "1");
 
+#ifdef USES_HWC_SERVICES
+    sp<IServiceManager> sm = defaultServiceManager();
+    sp<android::IExynosHWCService> hwc =
+        interface_cast<android::IExynosHWCService>(sm->getService(String16("Exynos.HWCService")));
+    ALOGD("boot finished. Inform HWC");
+    hwc->setBootFinished();
+#endif
+
     const int LOGTAG_SF_STOP_BOOTANIM = 60110;
     LOG_EVENT_LONG(LOGTAG_SF_STOP_BOOTANIM,
                    ns2ms(systemTime(SYSTEM_TIME_MONOTONIC)));
@@ -475,7 +491,7 @@ void SurfaceFlinger::init() {
 
         // set SFEventThread to SCHED_FIFO to minimize jitter
         struct sched_param param = {0};
-        param.sched_priority = 1;
+        param.sched_priority = 2;
         if (sched_setscheduler(mSFEventThread->getTid(), SCHED_FIFO, &param) != 0) {
             ALOGE("Couldn't set SCHED_FIFO for SFEventThread");
         }
@@ -879,6 +895,19 @@ void SurfaceFlinger::signalTransaction() {
 }
 
 void SurfaceFlinger::signalLayerUpdate() {
+#ifdef USES_HWC_SERVICES
+    if (notifyPSRExit) {
+        notifyPSRExit = false;
+        sp<IServiceManager> sm = defaultServiceManager();
+        sp<IExynosHWCService> hwcService =
+            interface_cast<android::IExynosHWCService>(
+                sm->getService(String16("Exynos.HWCService")));
+        if (hwcService != NULL)
+            hwcService->notifyPSRExit();
+        else
+            ALOGE("HWCService::notifyPSRExit failed");
+    }
+#endif
     mEventQueue.invalidate();
 }
 
@@ -1078,6 +1107,9 @@ void SurfaceFlinger::handleMessageRefresh() {
     doDebugFlashRegions();
     doComposition();
     postComposition(refreshStartTime);
+#ifdef USES_HWC_SERVICES
+    notifyPSRExit = true;
+#endif
 
     mPreviousPresentFence = mHwc->getRetireFence(HWC_DISPLAY_PRIMARY);
 
@@ -3127,6 +3159,26 @@ void SurfaceFlinger::dumpAllLocked(const Vector<String16>& args, size_t& index,
      * VSYNC state
      */
     mEventThread->dump(result);
+    result.append("\n");
+
+    /*
+     * HWC layer minidump
+     */
+    for (size_t d = 0; d < mDisplays.size(); d++) {
+        const sp<const DisplayDevice>& displayDevice(mDisplays[d]);
+        int32_t hwcId = displayDevice->getHwcDisplayId();
+        if (hwcId == DisplayDevice::DISPLAY_ID_INVALID) {
+            continue;
+        }
+
+        result.appendFormat("Display %d HWC layers:\n", hwcId);
+        Layer::miniDumpHeader(result);
+        for (size_t l = 0; l < count; l++) {
+            const sp<Layer>& layer(currentLayers[l]);
+            layer->miniDump(result, hwcId);
+        }
+        result.append("\n");
+    }
 
     /*
      * Dump HWComposer state

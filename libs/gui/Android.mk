@@ -83,12 +83,10 @@ LOCAL_SHARED_LIBRARIES := \
 	libui \
 	libutils \
 	liblog
-	
+
 ifeq ($(BOARD_USE_MHEAP_SCREENSHOT),true)
     LOCAL_CFLAGS += -DUSE_MHEAP_SCREENSHOT
 endif
-
-
 
 LOCAL_MODULE := libgui
 

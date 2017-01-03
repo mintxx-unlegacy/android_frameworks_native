@@ -3932,6 +3932,8 @@ bool SurfaceFlinger::getFrameTimestamps(const Layer& layer,
         uint64_t frameNumber, FrameTimestamps* outTimestamps) {
     return mFenceTracker.getFrameTimestamps(layer, frameNumber, outTimestamps);
 }
+
+
 // ---------------------------------------------------------------------------
 
 SurfaceFlinger::LayerVector::LayerVector() {
@@ -3989,6 +3991,7 @@ SurfaceFlinger::DisplayDeviceState::DisplayDeviceState(
 }; // namespace android
 
 
+
 #ifndef USE_MHEAP_SCREENSHOT
 #if defined(__gl_h_)
 #error "don't include gl/gl.h in this file"
@@ -3998,3 +4001,4 @@ SurfaceFlinger::DisplayDeviceState::DisplayDeviceState(
 #error "don't include gl2/gl2.h in this file"
 #endif
 #endif
+

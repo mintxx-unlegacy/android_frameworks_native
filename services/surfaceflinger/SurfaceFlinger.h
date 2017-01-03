@@ -413,7 +413,7 @@ private:
             uint32_t minLayerZ, uint32_t maxLayerZ,
             bool useIdentityTransform, Transform::orientation_flags rotation,
             bool isLocalScreenshot, bool useReadPixels);
-            
+           
 #ifdef USE_MHEAP_SCREENSHOT
     status_t captureScreenImplCpuConsumerLocked(
             const sp<const DisplayDevice>& hw,
@@ -422,7 +422,6 @@ private:
             uint32_t minLayerZ, uint32_t maxLayerZ,
             bool useIdentityTransform, Transform::orientation_flags rotation);
 #endif
-
 
     /* ------------------------------------------------------------------------
      * EGL

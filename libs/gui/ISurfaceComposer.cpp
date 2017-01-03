@@ -100,7 +100,7 @@ public:
         data.writeInterfaceToken(ISurfaceComposer::getInterfaceDescriptor());
         remote()->transact(BnSurfaceComposer::BOOT_FINISHED, data, &reply);
     }
-    
+   
 #ifdef USE_MHEAP_SCREENSHOT
     virtual status_t captureScreenLegacy(
             const sp<IBinder>& display, sp<IMemoryHeap>* heap,

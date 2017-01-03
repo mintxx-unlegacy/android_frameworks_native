@@ -960,6 +960,7 @@ status_t ScreenshotClient::update(const sp<IBinder>& display,
         bool useIdentityTransform, uint32_t rotation) {
     sp<ISurfaceComposer> s(ComposerService::getComposerService());
     if (s == NULL) return NO_INIT;
+
 #ifdef USE_MHEAP_SCREENSHOT
     int ret = -1;
     mHeap = 0;

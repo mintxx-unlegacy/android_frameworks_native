@@ -109,6 +109,7 @@ DisplayDevice::DisplayDevice(
 {
     Surface* surface;
     mNativeWindow = surface = new Surface(producer, false);
+
 #ifndef EGL_NEEDS_FNW
     ANativeWindow* const window = mNativeWindow.get();
 #else

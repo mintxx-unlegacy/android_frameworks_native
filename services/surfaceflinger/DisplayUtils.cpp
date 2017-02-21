@@ -90,6 +90,7 @@ Layer* DisplayUtils::getLayerInstance(SurfaceFlinger* flinger,
     return new Layer(flinger, client, name, w, h, flags);
 }
 
+#ifndef USE_HWC2
 HWComposer* DisplayUtils::getHWCInstance(
                         const sp<SurfaceFlinger>& flinger,
                         HWComposer::EventHandler& handler) {
@@ -105,6 +106,7 @@ HWComposer* DisplayUtils::getHWCInstance(
     return new HWComposer(flinger, handler);
 #endif
 }
+#endif
 
 void DisplayUtils::initVDSInstance(HWComposer* hwc, int32_t hwcDisplayId,
         sp<IGraphicBufferProducer> currentStateSurface, sp<DisplaySurface> &dispSurface,
@@ -191,7 +193,7 @@ bool DisplayUtils::canAllocateHwcDisplayIdForVDS(int usage) {
     flag_mask = GRALLOC_USAGE_PRIVATE_WFD;
 #endif
 
-    return ((mHasWbNode) && (!allowHwcForVDS) && (usage & flag_mask));
+    return ((mHasWbNode) && (allowHwcForVDS || (usage & flag_mask)));
 }
 
 int DisplayUtils::getNumFbNodes() {

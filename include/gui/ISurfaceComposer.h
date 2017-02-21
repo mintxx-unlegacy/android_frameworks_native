@@ -167,7 +167,6 @@ public:
             bool useIdentityTransform,
             Rotation rotation = eRotateNone) = 0;
 #endif
-
     /* Clears the frame statistics for animations.
      *
      * Requires the ACCESS_SURFACE_FLINGER permission.

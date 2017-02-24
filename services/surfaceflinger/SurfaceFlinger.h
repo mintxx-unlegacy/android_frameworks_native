@@ -280,16 +280,8 @@ private:
                      bool& /*bIgnoreLayers*/,
                      int& /*indexLOI*/) { }
 
-#ifndef USE_HWC2
-    virtual bool updateLayerVisibleNonTransparentRegion(
-                     const int& dpy, const sp<Layer>& layer,
-                     bool& bIgnoreLayers, int& indexLOI,
-                     uint32_t layerStack, const int& i);
-
     virtual void delayDPTransactionIfNeeded(
                      const Vector<DisplayState>& /*displays*/) { }
-
-
 
     virtual void isfreezeSurfacePresent(
                      bool& freezeSurfacePresent,
@@ -309,8 +301,6 @@ private:
                      const int& dpy, const sp<Layer>& layer,
                      bool& bIgnoreLayers, int& indexLOI,
                      uint32_t layerStack, const int& i);
-
-    virtual void updateVisibleRegionsDirty() { }
 
     virtual void  drawWormHoleIfRequired(HWComposer::LayerListIterator &cur,
         const HWComposer::LayerListIterator &end,
@@ -649,16 +639,6 @@ private:
     nsecs_t mFrameBuckets[NUM_BUCKETS];
     nsecs_t mTotalTime;
     std::atomic<nsecs_t> mLastSwapTime;
-
-    FrameRateHelper mFrameRateHelper;
-
-    /*
-     * A number that increases on every new frame composition and screen capture.
-     * LayerBlur can speed up it's drawing by caching texture using this variable
-     * if multiple LayerBlur objects draw in one frame composition.
-     * In case of display mirroring, this variable should be increased on every display.
-     */
-    uint32_t mActiveFrameSequence;
 
     // Double- vs. triple-buffering stats
     struct BufferingStats {

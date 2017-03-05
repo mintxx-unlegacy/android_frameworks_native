@@ -156,7 +156,7 @@ public:
             bool useIdentityTransform,
             Rotation rotation = eRotateNone,
             bool isCpuConsumer = false) = 0;
-            
+         
 #ifdef USE_MHEAP_SCREENSHOT
     /* Capture the specified screen. requires READ_FRAME_BUFFER permission
      * This function will fail if there is a secure window on screen.
@@ -168,7 +168,6 @@ public:
             bool useIdentityTransform,
             Rotation rotation = eRotateNone) = 0;
 #endif
-
 
     /* Clears the frame statistics for animations.
      *

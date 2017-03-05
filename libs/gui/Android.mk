@@ -89,7 +89,6 @@ ifeq ($(BOARD_USE_MHEAP_SCREENSHOT),true)
 endif
 
 
-
 LOCAL_MODULE := libgui
 
 ifeq ($(TARGET_BOARD_PLATFORM), tegra)

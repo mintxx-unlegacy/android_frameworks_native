@@ -9,4 +9,4 @@ html: $(HEADERS) Doxyfile
 website: $(HEADERS) Doxyfile header.html
 	mkdir -p website
 	HTML_HEADER=header.html HTML_FOOTER=footer.html HTML_OUTPUT=website doxygen
-	rm -f website/index.html
+#	rm -f website/index.html

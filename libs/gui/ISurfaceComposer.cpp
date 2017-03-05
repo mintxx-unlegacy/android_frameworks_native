@@ -478,6 +478,7 @@ status_t BnSurfaceComposer::onTransact(
             bootFinished();
             return NO_ERROR;
         }
+
 #ifdef USE_MHEAP_SCREENSHOT
         case CAPTURE_SCREEN_DEPRECATED: {
             CHECK_INTERFACE(ISurfaceComposer, data, reply);

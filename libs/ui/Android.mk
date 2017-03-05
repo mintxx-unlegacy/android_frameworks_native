@@ -36,7 +36,6 @@ LOCAL_CPPFLAGS += -Wno-padded
 
 LOCAL_SRC_FILES := \
 	Fence.cpp \
-	FramebufferNativeWindow.cpp \
 	FrameStats.cpp \
 	Gralloc1.cpp \
 	Gralloc1On0Adapter.cpp \

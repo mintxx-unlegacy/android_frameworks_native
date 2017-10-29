@@ -50,6 +50,10 @@
 #include <android/hardware/configstore/1.0/ISurfaceFlingerConfigs.h>
 #include <configstore/Utils.h>
 
+#ifdef EGL_NEEDS_FNW
+#include <ui/FramebufferNativeWindow.h>
+#endif
+
 // ----------------------------------------------------------------------------
 using namespace android;
 // ----------------------------------------------------------------------------

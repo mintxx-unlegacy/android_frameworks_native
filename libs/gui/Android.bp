@@ -16,6 +16,9 @@ cc_library_shared {
     name: "libgui",
 
     clang: true,
+
+    cflags: ["-DUSE_MHEAP_SCREENSHOT"], 
+
     cppflags: [
         "-Weverything",
         "-Werror",
@@ -51,6 +54,8 @@ cc_library_shared {
         "-Wno-documentation",
 
         "-DDEBUG_ONLY_CODE=0",
+
+	"-DEGL_NEEDS_FNW",
     ],
 
     product_variables: {

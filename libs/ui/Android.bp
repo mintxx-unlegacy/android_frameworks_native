@@ -60,6 +60,7 @@ cc_library_shared {
         "Rect.cpp",
         "Region.cpp",
         "UiConfig.cpp",
+	"FramebufferNativeWindow.cpp",
     ],
 
     include_dirs: [

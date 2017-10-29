@@ -40,6 +40,10 @@ LOCAL_SRC_FILES := \
     RenderEngine/Texture.cpp \
     RenderEngine/GLES20RenderEngine.cpp \
 
+ifeq ($(BOARD_USE_MHEAP_SCREENSHOT),true)
+    LOCAL_CFLAGS += -DUSE_MHEAP_SCREENSHOT
+endif
+
 LOCAL_MODULE := libsurfaceflinger
 LOCAL_C_INCLUDES := \
     frameworks/native/vulkan/include \
@@ -58,6 +62,11 @@ else
     LOCAL_SRC_FILES += \
         SurfaceFlinger_hwc1.cpp \
         DisplayHardware/HWComposer_hwc1.cpp
+endif
+
+
+ifeq ($(BOARD_EGL_NEEDS_FNW),true)
+    LOCAL_CFLAGS += -DEGL_NEEDS_FNW
 endif
 
 LOCAL_CFLAGS += -fvisibility=hidden -Werror=format

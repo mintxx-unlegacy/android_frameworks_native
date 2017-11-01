@@ -203,8 +203,6 @@ status_t GraphicBufferAllocator::allocate(uint32_t width, uint32_t height,
         rec.size = static_cast<size_t>(height * (*stride) * bpp);
         rec.requestorName = std::move(requestorName);
         list.add(*handle, rec);
-
-        return NO_ERROR;
     } else {
         ALOGE("Failed to allocate (%u x %u) layerCount %u format %d "
                 "usage %" PRIx64 ": %d",

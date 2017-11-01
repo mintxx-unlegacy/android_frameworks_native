@@ -31,6 +31,8 @@
 
 #include <ui/ANativeObjectBase.h>
 #include <ui/Rect.h>
+#include <hardware/fb.h>
+#include <hardware/gralloc.h>
 
 #define MIN_NUM_FRAME_BUFFERS  2
 #define MAX_NUM_FRAME_BUFFERS  3

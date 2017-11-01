@@ -26,6 +26,7 @@
 #include <utils/Vector.h>
 
 #include <binder/IInterface.h>
+#include <binder/IMemory.h>
 
 #include <ui/FrameStats.h>
 #include <ui/PixelFormat.h>
@@ -180,7 +181,7 @@ public:
     virtual status_t captureScreenLegacy(const sp<IBinder>& display, sp<IMemoryHeap>* heap,
             uint32_t* width, uint32_t* height,
             Rect sourceCrop, uint32_t reqWidth, uint32_t reqHeight,
-            uint32_t minLayerZ, uint32_t maxLayerZ,
+            int32_t minLayerZ, int32_t maxLayerZ,
             bool useIdentityTransform,
             Rotation rotation = eRotateNone) = 0;
 #endif
